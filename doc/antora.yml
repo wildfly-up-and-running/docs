@@ -1,0 +1,5 @@
+name: wildfly-up-and-running
+title: WildFly Up and Running
+version: main
+nav:
+  - modules/ROOT/pages/nav.adoc

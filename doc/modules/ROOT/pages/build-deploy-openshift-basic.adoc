@@ -1,0 +1,80 @@
+= Build and Deploy Your Java Application With WildFly on OpenShift
+
+This tutorial will illustrate how to build and deploy a Java application with WildFly on OpenShift.
+
+== Prerequisites
+
+* Access to an OpenShift cluster (e.g. https://developers.redhat.com/developer-sandbox/)
+
+== Application Overview
+
+For this tutorial, we will use the `microprofile-config` quickstart for WildFly.
+This is a simple Java application which provides JAX-RS endpoints and reads configuration using MicroProfile Config.
+
+The code is located at https://github.com/wildfly/quickstart/tree/master/microprofile-config.
+
+== Add a Helm Chart for WildFly
+
+We will build and deploy the application on OpenShift using the Helm Chart for WildFly that is provided by the OpenShift Developer Console.
+
+* Go to the OpenShift Dev Console (in the `Topology` perspective)
+* Click on `+ Add > Helm Chart > WildFly``
+* Click on `Install Helm Chart`
+  We need to configure the Helm Chart to build and deploy our quickstart.
+
+  1. First, we will change the name of the release to `my-wildfly-app` in the `Release Name` field instead of the default `wildfly`.
+  2. We will change the YAML content to configure the Helm Chart by copying the following content in the YAML view:
+
+[source,yaml]
+----
+build:
+  uri: https://github.com/wildfly/quickstart.git
+  ref: 24.0.0.SP1
+  mode: bootable-jar
+  env:
+  - name: ARTIFACT_DIR
+    value: microprofile-config/target
+  - name: MAVEN_ARGS_APPEND
+    value: -am -pl microprofile-config -Pbootable-jar-openshift -Djkube.skip=true
+  - name: MAVEN_OPTS
+    value: '-XX:MetaspaceSize=251m -XX:MaxMetaspaceSize=256m'
+deploy:
+  replicas: 1
+  env:
+  - name: CONFIG_PROP
+    value: Hello from OpenShift
+----
+
+* Click on `Install`
+
+The Helm release will build and deploy the Java applications.
+It will display information to interact with the deployed resources from the command-line interface using `oc`:
+
+[source,shell]
+----
+Your WildFly appplication is building! To follow the build, run:
+
+$ oc get build -w
+
+Note that your Deployment will report "ErrImagePull" and "ImagePullBackOff" until the build is complete. Once the build is complete, your image will be automatically rolled out.
+
+To follow the deployment of your application, run:
+
+$ oc get deployment my-wildfly-app -w
+----
+
+From the OpenShift Developer Console, we can use the `Topology` view to see progress on the build and deployment of our application:
+
+[#img-helm-release-toplogy-openshift] 
+.Helm Release of the application displayed in OpenShift Topology view 
+image::helm-release-toplogy-openshift.png[Helm Release of the application displayed in OpenShift Topology view ]
+
+When build is finished (the bottom-left icon will display a green check) and the application is deployed (the circle outline is in dark blue), you can go the the URL (using the top-right icon) from the `Route`, append `/config/value` and you will see the message:
+
+----
+Hello from OpenShift
+----
+
+This message corresponds to the `CONFIG_PROP` environment variable defined in the Helm Chart YAML file.
+
+Congratulations, you have built and deployed your first Java application with WildFly on OpenShift!
