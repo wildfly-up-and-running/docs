@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Build and Deploy Your Java Application With WildFly on OpenShift :: WildFly Up and Running</title>
+    <meta name="generator" content="Antora 2.3.4">
+    <link rel="stylesheet" href="../../_/css/site.css">
+    <script>var uiRootPath = '../../_'</script>
+  </head>
+  <body class="article">
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="../..">WildFly Up and Running</a>
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="wildfly-up-and-running" data-version="main">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <h3 class="title"><a href="index.html">WildFly Up and Running</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="index.html">Getting Started with WildFly on the Cloud</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">Reference Guides</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="helm-chart.html">Helm Chart for WildFly</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">Tutorials</span>
+<ul class="nav-list">
+  <li class="nav-item is-current-page" data-depth="2">
+    <a class="nav-link" href="build-deploy-openshift-basic.html">Build and Deploy Your Java Application With WildFly on OpenShift</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">WildFly Up and Running</span>
+    <span class="version">main</span>
+  </div>
+  <ul class="components">
+    <li class="component is-current">
+      <a class="title" href="index.html">WildFly Up and Running</a>
+      <ul class="versions">
+        <li class="version is-current is-latest">
+          <a href="index.html">main</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="index.html">WildFly Up and Running</a></li>
+    <li>Tutorials</li>
+    <li><a href="build-deploy-openshift-basic.html">Build and Deploy Your Java Application With WildFly on OpenShift</a></li>
+  </ul>
+</nav>
+  <div class="edit-this-page"><a href="https://github.com/wildfly-up-and-running/docs/edit/main/doc/modules/ROOT/pages/build-deploy-openshift-basic.adoc">Edit this Page</a></div>
+  </div>
+  <div class="content">
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+<article class="doc">
+<h1 class="page">Build and Deploy Your Java Application With WildFly on OpenShift</h1>
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>This tutorial will illustrate how to build and deploy a Java application with WildFly on OpenShift.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_prerequisites"><a class="anchor" href="#_prerequisites"></a>Prerequisites</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p>Access to an OpenShift cluster (e.g. <a href="https://developers.redhat.com/developer-sandbox/" class="bare">https://developers.redhat.com/developer-sandbox/</a>)</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_application_overview"><a class="anchor" href="#_application_overview"></a>Application Overview</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>For this tutorial, we will use the <code>microprofile-config</code> quickstart for WildFly.
+This is a simple Java application which provides JAX-RS endpoints and reads configuration using MicroProfile Config.</p>
+</div>
+<div class="paragraph">
+<p>The code is located at <a href="https://github.com/wildfly/quickstart/tree/master/microprofile-config" class="bare">https://github.com/wildfly/quickstart/tree/master/microprofile-config</a>.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_add_a_helm_chart_for_wildfly"><a class="anchor" href="#_add_a_helm_chart_for_wildfly"></a>Add a Helm Chart for WildFly</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>We will build and deploy the application on OpenShift using the Helm Chart for WildFly that is provided by the OpenShift Developer Console.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Go to the OpenShift Dev Console (in the <code>Topology</code> perspective)</p>
+</li>
+<li>
+<p>Click on <code>+ Add &gt; Helm Chart &gt; WildFly`</code></p>
+</li>
+<li>
+<p>Click on <code>Install Helm Chart</code>
+We need to configure the Helm Chart to build and deploy our quickstart.</p>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>First, we will change the name of the release to <code>my-wildfly-app</code> in the <code>Release Name</code> field instead of the default <code>wildfly</code>.</p>
+</li>
+<li>
+<p>We will change the YAML content to configure the Helm Chart by copying the following content in the YAML view:</p>
+</li>
+</ol>
+</div>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">build:
+  uri: https://github.com/wildfly/quickstart.git
+  ref: 24.0.0.SP1
+  mode: bootable-jar
+  env:
+  - name: ARTIFACT_DIR
+    value: microprofile-config/target
+  - name: MAVEN_ARGS_APPEND
+    value: -am -pl microprofile-config -Pbootable-jar-openshift -Djkube.skip=true
+  - name: MAVEN_OPTS
+    value: '-XX:MetaspaceSize=251m -XX:MaxMetaspaceSize=256m'
+deploy:
+  replicas: 1
+  env:
+  - name: CONFIG_PROP
+    value: Hello from OpenShift</code></pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Click on <code>Install</code></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>The Helm release will build and deploy the Java applications.
+It will display information to interact with the deployed resources from the command-line interface using <code>oc</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">Your WildFly appplication is building! To follow the build, run:
+
+$ oc get build -w
+
+Note that your Deployment will report "ErrImagePull" and "ImagePullBackOff" until the build is complete. Once the build is complete, your image will be automatically rolled out.
+
+To follow the deployment of your application, run:
+
+$ oc get deployment my-wildfly-app -w</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>From the OpenShift Developer Console, we can use the <code>Topology</code> view to see progress on the build and deployment of our application:</p>
+</div>
+<div id="img-helm-release-toplogy-openshift" class="imageblock">
+<div class="content">
+<img src="_images/helm-release-toplogy-openshift.png" alt="Helm Release of the application displayed in OpenShift Topology view">
+</div>
+<div class="title">Figure 1. Helm Release of the application displayed in OpenShift Topology view</div>
+</div>
+<div class="paragraph">
+<p>When build is finished (the bottom-left icon will display a green check) and the application is deployed (the circle outline is in dark blue), you can go the the URL (using the top-right icon) from the <code>Route</code>, append <code>/config/value</code> and you will see the message:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>Hello from OpenShift</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This message corresponds to the <code>CONFIG_PROP</code> environment variable defined in the Helm Chart YAML file.</p>
+</div>
+<div class="paragraph">
+<p>Congratulations, you have built and deployed your first Java application with WildFly on OpenShift!</p>
+</div>
+</div>
+</div>
+</article>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <p>This page was built using the WildFly default UI.</p>
+</footer>
+<script id="site-script" src="../../_/js/site.js" data-ui-root-path="../../_"></script>
+<script async src="../../_/js/vendor/highlight.js"></script>
+  </body>
+</html>
