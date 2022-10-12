@@ -1,41 +1,10 @@
-= Getting Started with WildFly on the Cloud
-
-Guide to developing with WildFly for Kubernetes and Openshift.
+= WildFly Up and Running
 
 == Introduction
 
-TODO
+This site is a collection of tutorials and guides to get WildFly Up and Running on Kubernetes.
 
-== How Does WildFly Work on the Cloud?
+== References
 
-TODO
-
-== Tutorial: Build and Deploy Your Java Application With WildFly on OpenShift
-
-The xref:build-deploy-openshift-basic.adoc[][basic tutorial] shows how to build and deploy a Java application with WildFly on OpenShift.
-
-It is recommended to do this tutorial first as it will serve as the basis to show the concepts and advanced usage of WildFly on OpenShift
-
-== Build an application image with WildFly
-
-TODO
-
-== Deploy an application image with WildFly
-
-TODO
-
-== Configure WildFly for Your Java Application
-
-TODO
-
-== Capability Trimming in WildFly on the Cloud
-
-TODO
-
-== Troubleshooting
-
-TODO
-
-== Advanced Tutorials
-
-TODO
+* https://wildfly.org[WildFly]
+* https://kubernetes.io[Kubernetes]
