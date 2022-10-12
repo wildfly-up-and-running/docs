@@ -3,17 +3,36 @@
 This tutorial will illustrate how to configure TLS with WildFly on Kubernetes.
 
 This is based on the https://github.com/wildfly-up-and-running/wuar-tls-demo[wuar-tls-demo].
-The https://github.com/wildfly-up-and-running/wuar-demo[README] of the project lists how to configure and deploy WildFly on Kubrenetes with TLS enabled.
+The https://github.com/wildfly-up-and-running/wuar-tls-demo[README] of the project lists how to configure and deploy WildFly on Kubrenetes with TLS enabled.
 
 In this tutorial, we will explain the different configurations to achieve this result.
 
-== Generation of a keystore with a TLS certificate
+== Generate a keystore and a TLS certificate with `keytool`
 
-TODO
+To use TLS with WildFly, we need to generate a keystore. We can use the Java tool command `keytool` to do so.
+
+The https://github.com/wildfly-up-and-running/wuar-tls-demo#generate-a-keystore[wuar-tls-demo] provides an example to generate such a keystore.
+
+The name of the keystore and the password to access it must be kept in mind as we will now add them to a Kubernetes secret.
 
 == Create a Kubernetes secret to access the keystore from the application
 
-TODO
+Once a keystore is generated, we will create a Kubernetes secret to make it available in Kubenertes (in the same namespace that the application).
+
+The command to create this secret is:
+
+```
+kubectl create secret generic wuar-keystore-secret \
+  --from-file=keystore.jks \
+  --from-literal=keystore-password=mypasswordxyz
+```
+
+This creates a Kubernetes secret named `wuar-keystore-secret` that contains 2 keys:
+
+* The `keystore.jks` key which value is the content of the `keystore.jks` file that we just generated.
+* The `keystore-password` key which value is the string `mypasswordxyz` (that was the password we typed when the keystore was generated).
+
+Storing the keystore password in the same secret than the keystore will allow the application to access it without having to specify this password in clear text anywhere.
 
 == Configuration of the Helm chart
 
