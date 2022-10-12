@@ -1,6 +1,6 @@
-= WildFly Maven Plugin (org.wildfly.plugins:wildfly-maven-plugin)
+= WildFly Maven Plugin
 
-This guide describes how to build application image for WildFly using the `wildfly-maven-plugin`
+This guide describes how to build application image for WildFly using the `org.wildfly.pluginswildfly-maven-plugin`.
 
 == Introduction
 
