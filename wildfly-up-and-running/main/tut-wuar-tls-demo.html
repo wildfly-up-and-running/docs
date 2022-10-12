@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Configure TLS for WildFly on Kubernetes :: WildFly Up and Running</title>
+    <meta name="generator" content="Antora 2.3.4">
+    <link rel="stylesheet" href="../../_/css/site.css">
+    <script>var uiRootPath = '../../_'</script>
+  </head>
+  <body class="article">
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="../..">WildFly Up and Running</a>
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="wildfly-up-and-running" data-version="main">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <h3 class="title"><a href="index.html">WildFly Up and Running</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">Tutorials</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="tut-wuar-demo.html">Get WildFly Up and Running on Kubernetes</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">Reference Guides</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="helm-chart.html">Helm Chart for WildFly</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">WildFly Up and Running</span>
+    <span class="version">main</span>
+  </div>
+  <ul class="components">
+    <li class="component is-current">
+      <a class="title" href="index.html">WildFly Up and Running</a>
+      <ul class="versions">
+        <li class="version is-current is-latest">
+          <a href="index.html">main</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="index.html">WildFly Up and Running</a></li>
+    <li><a href="tut-wuar-tls-demo.html">Configure TLS for WildFly on Kubernetes</a></li>
+  </ul>
+</nav>
+  <div class="edit-this-page"><a href="https://github.com/wildfly-up-and-running/docs/edit/main/doc/modules/ROOT/pages/tut-wuar-tls-demo.adoc">Edit this Page</a></div>
+  </div>
+  <div class="content">
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+<article class="doc">
+<h1 class="page">Configure TLS for WildFly on Kubernetes</h1>
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>This tutorial will illustrate how to configure TLS with WildFly on Kubernetes.</p>
+</div>
+<div class="paragraph">
+<p>This is based on the <a href="https://github.com/wildfly-up-and-running/wuar-tls-demo">wuar-tls-demo</a>.
+The <a href="https://github.com/wildfly-up-and-running/wuar-demo">README</a> of the project lists how to configure and deploy WildFly on Kubrenetes with TLS enabled.</p>
+</div>
+<div class="paragraph">
+<p>In this tutorial, we will explain the different configurations to achieve this result.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_generation_of_a_keystore_with_a_tls_certificate"><a class="anchor" href="#_generation_of_a_keystore_with_a_tls_certificate"></a>Generation of a keystore with a TLS certificate</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>TODO</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_create_a_kubernetes_secret_to_access_the_keystore_from_the_application"><a class="anchor" href="#_create_a_kubernetes_secret_to_access_the_keystore_from_the_application"></a>Create a Kubernetes secret to access the keystore from the application</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>TODO</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_configuration_of_the_helm_chart"><a class="anchor" href="#_configuration_of_the_helm_chart"></a>Configuration of the Helm chart</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>To configure WildFly with TLS, we need 2 steps:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Inject the Kubernetes secret in the application so that WildFLy can access it.</p>
+</li>
+<li>
+<p>Specify to WildFly the location of the keytore, its name and the password to be able to read it.</p>
+</li>
+</ol>
+</div>
+<div class="sect2">
+<h3 id="_inject_the_kubernetes_secret_in_the_application"><a class="anchor" href="#_inject_the_kubernetes_secret_in_the_application"></a>Inject the Kubernetes secret in the application</h3>
+<div class="paragraph">
+<p>The first step is achieved by mounting the Kubernetes secret as a volume in the application:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">deploy:
+ volumeMounts:
+    - name: wuar-keystore-secret-volume
+      mountPath: /etc/wuar-keystore-secret
+  volumes:
+    - name: wuar-keystore-secret-volume
+      secret:
+        secretName: wuar-keystore-secret</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>With that configuration, the wuar-keystore-secret` (and its properties) will be mounted in the application file system at <code>/etc/wuar-keystore-secret</code>.</p>
+</div>
+<div class="paragraph">
+<p>The second step is achived by specifying environment variables to communicate to WildFly (and its <code>elytron</code> subsystem) where the keystore is located and how to read the TLS
+certificate from it:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">deploy:
+  env:
+    - name: HTTPS_KEYSTORE
+      value: keystore.jks
+    - name: HTTPS_PASSWORD
+      valueFrom:
+        secretKeyRef:
+          key: keystore-password
+          name: wuar-keystore-secret
+    - name: HTTPS_KEYSTORE_DIR
+      value: /etc/wuar-keystore-secret</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>These 3 environment variables are defined in the <a href="https://github.com/wildfly/wildfly-cekit-modules/blob/main/jboss/container/wildfly/launch/elytron/module.yaml">Elytron cloud environment variables</a>.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>HTTPS_KEYSTORE</code> is the name of the keystore (as it is specified in the Kubernetes secret).</p>
+</li>
+<li>
+<p><code>HTTPS_KEYSTORE_DIR</code> is the path to the keystore that was mounted in the first step.</p>
+</li>
+<li>
+<p><code>HTTPS_PASSWORD</code> is the password to read the keystore. We do not specify its value in clear text but will read it instead from the <code>keystore-password</code>
+key in the Kubernetes secret <code>wuar-keystore-secret</code>.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_references"><a class="anchor" href="#_references"></a>References</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p><a href="https://github.com/wildfly/wildfly-cekit-modules/blob/main/jboss/container/wildfly/launch/elytron/module.yaml">Elytron cloud environment variables</a></p>
+</li>
+<li>
+<p><a href="https://kubernetes.io/docs/concepts/configuration/secret/">Kubernetes Secret</a></p>
+</li>
+<li>
+<p><a href="https://kubernetes.io/docs/concepts/storage/volumes/">Kubernetes Volumes</a></p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</article>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <p>This page was built using the WildFly default UI.</p>
+</footer>
+<script id="site-script" src="../../_/js/site.js" data-ui-root-path="../../_"></script>
+<script async src="../../_/js/vendor/highlight.js"></script>
+  </body>
+</html>
