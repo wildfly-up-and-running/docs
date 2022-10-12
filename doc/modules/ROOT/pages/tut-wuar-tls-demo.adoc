@@ -51,7 +51,7 @@ The first step is achieved by mounting the Kubernetes secret as a volume in the 
 
 ```yaml
 deploy:
- volumeMounts:
+  volumeMounts:
     - name: wuar-keystore-secret-volume
       mountPath: /etc/wuar-keystore-secret
   volumes:
