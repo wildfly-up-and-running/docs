@@ -6,3 +6,8 @@ using Helm Chart
 == Introduction
 
 TODO
+
+== References
+
+* https://docs.wildfly.org/wildfly-charts/[Home page of the Helm Chart for WildFly]
+* https://github.com/wildfly/wildfly-charts/tree/main/charts/wildfly[GitHub Project]
