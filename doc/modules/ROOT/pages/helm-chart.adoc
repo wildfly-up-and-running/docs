@@ -9,5 +9,5 @@ TODO
 
 == References
 
-* https://docs.wildfly.org/wildfly-charts/[Home page of the Helm Chart for WildFly]
+* https://artifacthub.io/packages/helm/wildfly/wildfly[ArtifactHUB page for the `wildfly` Helm Chart]
 * https://github.com/wildfly/wildfly-charts/tree/main/charts/wildfly[GitHub Project]
