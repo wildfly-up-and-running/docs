@@ -116,71 +116,48 @@ The <a href="https://github.com/wildfly-up-and-running/wuar-tls-demo">README</a>
 <p>To use TLS with WildFly, we need to generate a keystore. We can use the Java tool command <code>keytool</code> to do so.</p>
 </div>
 <div class="paragraph">
-<p>The <a href="https://github.com/wildfly-up-and-running/wuar-tls-demo#generate-a-keystore">wuar-tls-demo</a> provides an example to generate such a keystore.</p>
-</div>
-<div class="paragraph">
-<p>The name of the keystore and the password to access it must be kept in mind as we will now add them to a Kubernetes secret.</p>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_create_a_kubernetes_secret_to_access_the_keystore_from_the_application"><a class="anchor" href="#_create_a_kubernetes_secret_to_access_the_keystore_from_the_application"></a>Create a Kubernetes secret to access the keystore from the application</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>Once a keystore is generated, we will create a Kubernetes secret to make it available in Kubenertes (in the same namespace that the application).</p>
-</div>
-<div class="paragraph">
-<p>The command to create this secret is:</p>
+<p>The <a href="https://github.com/wildfly-up-and-running/wuar-tls-demo#generate-a-keystore">wuar-tls-demo</a> provides an example to generate such a keystore:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code>kubectl create secret generic wuar-keystore-secret \
+<pre class="highlightjs highlight"><code>keytool -genkey -keyalg RSA -keystore keystore.jks -validity 360 -keysize 2048
+
+The name of the keystore and the password to access it must be kept in mind as we will now add them to a Kubernetes secret.
+
+== Create a Kubernetes secret to access the keystore from the application
+
+Once a keystore is generated, we will create a Kubernetes secret to make it available in Kubenertes (in the same namespace that the application).
+
+The command to create this secret is:</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>kubectl create secret generic wuar-keystore-secret \
   --from-file=keystore.jks \
-  --from-literal=keystore-password=mypasswordxyz</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>This creates a Kubernetes secret named <code>wuar-keystore-secret</code> that contains 2 keys:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>The <code>keystore.jks</code> key which value is the content of the <code>keystore.jks</code> file that we just generated.</p>
-</li>
-<li>
-<p>The <code>keystore-password</code> key which value is the string <code>mypasswordxyz</code> (that was the password we typed when the keystore was generated).</p>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p>Storing the keystore password in the same secret than the keystore will allow the application to access it without having to specify this password in clear text anywhere.</p>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_configuration_of_the_helm_chart"><a class="anchor" href="#_configuration_of_the_helm_chart"></a>Configuration of the Helm chart</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>To configure WildFly with TLS, we need 2 steps:</p>
-</div>
-<div class="olist arabic">
-<ol class="arabic">
-<li>
-<p>Inject the Kubernetes secret in the application so that WildFly can access it.</p>
-</li>
-<li>
-<p>Specify to WildFly the location of the keytore, its name and the password to be able to read it.</p>
-</li>
-</ol>
-</div>
-<div class="sect2">
-<h3 id="_inject_the_kubernetes_secret_in_the_application"><a class="anchor" href="#_inject_the_kubernetes_secret_in_the_application"></a>Inject the Kubernetes secret in the application</h3>
-<div class="paragraph">
-<p>The first step is achieved by mounting the Kubernetes secret as a volume in the application:</p>
+  --from-literal=keystore-password=mypasswordxyz</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">deploy:
+<pre class="highlightjs highlight"><code>This creates a Kubernetes secret named `wuar-keystore-secret` that contains 2 keys:
+
+* The `keystore.jks` key which value is the content of the `keystore.jks` file that we just generated.
+* The `keystore-password` key which value is the string `mypasswordxyz` (that was the password we typed when the keystore was generated).
+
+Storing the keystore password in the same secret than the keystore will allow the application to access it without having to specify this password in clear text anywhere.
+
+== Configuration of the Helm chart
+
+To configure WildFly with TLS, we need 2 steps:
+
+1. Inject the Kubernetes secret in the application so that WildFly can access it.
+2. Specify to WildFly the location of the keytore, its name and the password to be able to read it.
+
+=== Inject the Kubernetes secret in the application
+
+The first step is achieved by mounting the Kubernetes secret as a volume in the application:
+
+```yaml
+deploy:
  volumeMounts:
     - name: wuar-keystore-secret-volume
       mountPath: /etc/wuar-keystore-secret
@@ -192,7 +169,6 @@ The <a href="https://github.com/wildfly-up-and-running/wuar-tls-demo">README</a>
 </div>
 <div class="paragraph">
 <p>With that configuration, the <code>wuar-keystore-secret</code> secert is mounted as volume (named wuar-keystore-secret-volume`) in the application&#8217;s file system at <code>/etc/wuar-keystore-secret</code>. Each key in the secret becomes a file under that directory with the name corresponding to the name of the key and the content corresponding to its value.</p>
-</div>
 </div>
 <div class="sect2">
 <h3 id="_access_the_keystore_from_wildfly"><a class="anchor" href="#_access_the_keystore_from_wildfly"></a>Access the keystore from WildFly</h3>
