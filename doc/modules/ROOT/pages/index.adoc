@@ -3,8 +3,3 @@
 == Introduction
 
 This site is a collection of tutorials and guides to get WildFly Up and Running on Kubernetes.
-
-== References
-
-* https://wildfly.org[WildFly]
-* https://kubernetes.io[Kubernetes]
