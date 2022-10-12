@@ -1,6 +1,6 @@
-= Build and Deploy Your Java Application With WildFly on OpenShift
+= Get WildFly Up and Running on Kubernetes
 
-This tutorial will illustrate how to build and deploy a Java application with WildFly on OpenShift.
+This tutorial will illustrate how to build and deploy a Jakarta EE application with WildFly on Kubernetes.
 
 This is based on the https://github.com/wildfly-up-and-running/wuar-demo[wuar-demo] that contains a Jakarta Web deployment.
 The https://github.com/wildfly-up-and-running/wuar-demo[README] of the project lists how to create the application image that contains WildFly and the Web deployment and deploy it on Kubernetes.
