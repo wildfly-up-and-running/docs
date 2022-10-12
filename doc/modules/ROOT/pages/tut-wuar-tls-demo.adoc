@@ -19,7 +19,7 @@ TODO
 
 To configure WildFly with TLS, we need 2 steps:
 
-1. Inject the Kubernetes secret in the application so that WildFLy can access it.
+1. Inject the Kubernetes secret in the application so that WildFly can access it.
 2. Specify to WildFly the location of the keytore, its name and the password to be able to read it.
 
 === Inject the Kubernetes secret in the application
@@ -37,9 +37,11 @@ deploy:
         secretName: wuar-keystore-secret
 ```
 
-With that configuration, the wuar-keystore-secret` (and its properties) will be mounted in the application file system at `/etc/wuar-keystore-secret`.
+With that configuration, the `wuar-keystore-secret` secert is mounted as volume (named wuar-keystore-secret-volume`) in the application's file system at `/etc/wuar-keystore-secret`. Each key in the secret becomes a file under that directory with the name corresponding to the name of the key and the content corresponding to its value.
 
-The second step is achived by specifying environment variables to communicate to WildFly (and its `elytron` subsystem) where the keystore is located and how to read the TLS
+=== Access the keystore from WildFly 
+
+This step is achived by specifying environment variables to communicate to WildFly (and its `elytron` subsystem) where the keystore is located and how to read the TLS
 certificate from it:
 
 ```yaml
