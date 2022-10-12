@@ -1,5 +1,6 @@
 * Tutorials
 ** xref:tut-wuar-demo.adoc[]
+** xref:tut-wuar-tls-demo.adoc[]
 * Reference Guides
 ** xref:helm-chart.adoc[]
 
