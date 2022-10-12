@@ -11,7 +11,10 @@ In this tutorial, we will explain the different configurations to achieve this r
 
 To use TLS with WildFly, we need to generate a keystore. We can use the Java tool command `keytool` to do so.
 
-The https://github.com/wildfly-up-and-running/wuar-tls-demo#generate-a-keystore[wuar-tls-demo] provides an example to generate such a keystore.
+The https://github.com/wildfly-up-and-running/wuar-tls-demo#generate-a-keystore[wuar-tls-demo] provides an example to generate such a keystore:
+
+```
+keytool -genkey -keyalg RSA -keystore keystore.jks -validity 360 -keysize 2048
 
 The name of the keystore and the password to access it must be kept in mind as we will now add them to a Kubernetes secret.
 
