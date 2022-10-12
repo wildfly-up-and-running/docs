@@ -16,4 +16,5 @@ TODO
 
 == References
 
-* https://docs.wildfly.org/wildfly-maven-plugin/[The home page for WildFly Maven Plugin (wildfly-maven-plugin)]
+* https://docs.wildfly.org/wildfly-maven-plugin/[Home page for WildFly Maven Plugin (wildfly-maven-plugin)]
+* https://github.com/wildfly/wildfly-maven-plugin[GitHub project]
