@@ -21,7 +21,7 @@ The name of the keystore and the password to access it must be kept in mind as w
 
 == Create a Kubernetes secret to access the keystore from the application
 
-Once a keystore is generated, we will create a Kubernetes secret to make it available in Kubenertes (in the same namespace that the application).
+Once a keystore is generated, we will create a Kubernetes secret to make it available in Kubernetes (in the same namespace as the application).
 
 The command to create this secret is:
 
