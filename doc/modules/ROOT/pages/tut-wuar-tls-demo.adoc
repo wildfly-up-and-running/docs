@@ -1,0 +1,70 @@
+= Configure TLS for WildFly on Kubernetes
+
+This tutorial will illustrate how to configure TLS with WildFly on Kubernetes.
+
+This is based on the https://github.com/wildfly-up-and-running/wuar-tls-demo[wuar-tls-demo].
+The https://github.com/wildfly-up-and-running/wuar-demo[README] of the project lists how to configure and deploy WildFly on Kubrenetes with TLS enabled.
+
+In this tutorial, we will explain the different configurations to achieve this result.
+
+== Generation of a keystore with a TLS certificate
+
+TODO
+
+== Create a Kubernetes secret to access the keystore from the application
+
+TODO
+
+== Configuration of the Helm chart
+
+To configure WildFly with TLS, we need 2 steps:
+
+1. Inject the Kubernetes secret in the application so that WildFLy can access it.
+2. Specify to WildFly the location of the keytore, its name and the password to be able to read it.
+
+=== Inject the Kubernetes secret in the application
+
+The first step is achieved by mounting the Kubernetes secret as a volume in the application:
+
+```yaml
+deploy:
+ volumeMounts:
+    - name: wuar-keystore-secret-volume
+      mountPath: /etc/wuar-keystore-secret
+  volumes:
+    - name: wuar-keystore-secret-volume
+      secret:
+        secretName: wuar-keystore-secret
+```
+
+With that configuration, the wuar-keystore-secret` (and its properties) will be mounted in the application file system at `/etc/wuar-keystore-secret`.
+
+The second step is achived by specifying environment variables to communicate to WildFly (and its `elytron` subsystem) where the keystore is located and how to read the TLS
+certificate from it:
+
+```yaml
+deploy:
+  env:
+    - name: HTTPS_KEYSTORE
+      value: keystore.jks
+    - name: HTTPS_PASSWORD
+      valueFrom:
+        secretKeyRef:
+          key: keystore-password
+          name: wuar-keystore-secret
+    - name: HTTPS_KEYSTORE_DIR
+      value: /etc/wuar-keystore-secret
+```
+
+These 3 environment variables are defined in the https://github.com/wildfly/wildfly-cekit-modules/blob/main/jboss/container/wildfly/launch/elytron/module.yaml[Elytron cloud environment variables].
+
+* `HTTPS_KEYSTORE` is the name of the keystore (as it is specified in the Kubernetes secret).
+* `HTTPS_KEYSTORE_DIR` is the path to the keystore that was mounted in the first step.
+* `HTTPS_PASSWORD` is the password to read the keystore. We do not specify its value in clear text but will read it instead from the `keystore-password`
+key in the Kubernetes secret `wuar-keystore-secret`.
+
+== References
+
+* https://github.com/wildfly/wildfly-cekit-modules/blob/main/jboss/container/wildfly/launch/elytron/module.yaml[Elytron cloud environment variables]
+* https://kubernetes.io/docs/concepts/configuration/secret/[Kubernetes Secret]
+* https://kubernetes.io/docs/concepts/storage/volumes/[Kubernetes Volumes]
