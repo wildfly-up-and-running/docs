@@ -134,7 +134,7 @@ The <a href="https://github.com/wildfly-up-and-running/wuar-demo">README</a> of 
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>Inject the Kubernetes secret in the application so that WildFLy can access it.</p>
+<p>Inject the Kubernetes secret in the application so that WildFly can access it.</p>
 </li>
 <li>
 <p>Specify to WildFly the location of the keytore, its name and the password to be able to read it.</p>
@@ -159,10 +159,13 @@ The <a href="https://github.com/wildfly-up-and-running/wuar-demo">README</a> of 
 </div>
 </div>
 <div class="paragraph">
-<p>With that configuration, the wuar-keystore-secret` (and its properties) will be mounted in the application file system at <code>/etc/wuar-keystore-secret</code>.</p>
+<p>With that configuration, the <code>wuar-keystore-secret</code> secert is mounted as volume (named wuar-keystore-secret-volume`) in the application&#8217;s file system at <code>/etc/wuar-keystore-secret</code>. Each key in the secret becomes a file under that directory with the name corresponding to the name of the key and the content corresponding to its value.</p>
 </div>
+</div>
+<div class="sect2">
+<h3 id="_access_the_keystore_from_wildfly"><a class="anchor" href="#_access_the_keystore_from_wildfly"></a>Access the keystore from WildFly</h3>
 <div class="paragraph">
-<p>The second step is achived by specifying environment variables to communicate to WildFly (and its <code>elytron</code> subsystem) where the keystore is located and how to read the TLS
+<p>This step is achived by specifying environment variables to communicate to WildFly (and its <code>elytron</code> subsystem) where the keystore is located and how to read the TLS
 certificate from it:</p>
 </div>
 <div class="listingblock">
