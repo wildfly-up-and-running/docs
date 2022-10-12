@@ -2,5 +2,7 @@
 ** xref:tut-wuar-demo.adoc[]
 ** xref:tut-wuar-tls-demo.adoc[]
 * Reference Guides
+** xref:wildfly-maven-plugin.adoc[]
 ** xref:helm-chart.adoc[]
+
 
