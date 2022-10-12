@@ -1,0 +1,19 @@
+= WildFly Maven Plugin (org.wildfly.plugins:wildfly-maven-plugin)
+
+This guide describes how to build application image for WildFly using the `wildfly-maven-plugin`
+
+== Introduction
+
+TODO
+
+== The `package` goal
+
+TODO
+
+== The `image` goal
+
+TODO
+
+== References
+
+* https://docs.wildfly.org/wildfly-maven-plugin/[The home page for WildFly Maven Plugin (wildfly-maven-plugin)]
