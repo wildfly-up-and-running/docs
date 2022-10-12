@@ -1,6 +1,5 @@
-* xref:index.adoc[]
+* Tutorials
+** xref:tut-wuar-demo.adoc[]
 * Reference Guides
 ** xref:helm-chart.adoc[]
-* Tutorials
-** xref:build-deploy-openshift-basic.adoc[]
 
